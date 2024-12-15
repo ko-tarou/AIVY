@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.websarva.wings.android.aivy"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.websarva.wings.android.aivy"
