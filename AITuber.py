@@ -4,6 +4,7 @@ import pprint
 from openai import OpenAI
 import sounddevice as sd
 import soundfile as sf
+import time
 
 
 def fetch_chat_id(youtube_api_key,live_id):
@@ -71,18 +72,26 @@ def play_reply(comment, reply):
     sd.wait()
 
 def main():
-    youtube_api_key = os.getenv("") #youtubeAPIを入力(google Cloudから取得)
-    youtube_url = ("")
-    base_url = "https://www.youtube.com/live"
-    live_id = youtube_url.replace(base_url, "") #liveIDを取得
+    youtube_api_key = os.getenv("AIzaSyA6qs0QgYWQ1DoxHBJfqcfKQmPVInoyIiU") #youtubeAPIを入力(google Cloudから取得)
+    youtube_url = ("https://www.youtube.com/live/fSWQlPFfyVo")
+    base_url = "https://www.youtube.com/live/"
+    live_id = "fSWQlPFfyVo"#youtube_url.replace(base_url, "") #liveIDを取得
     chat_id = fetch_chat_id(youtube_api_key,live_id)
     comment = get_latest_comment(youtube_api_key,live_id)
     client = OpenAI()
     reply = get_rely(client,comment)
-    play_reply(comment, reply)
+
+    pre_comment = ""
+    while True:
+        comment = get_latest_comment(youtube_api_key, chat_id)
+        if pre_comment != comment:
+            reply = get_rely(client,comment)
+            play_reply(comment, reply)
+
+        time.sleep(10)
 
 
-    
+
 
 
 
