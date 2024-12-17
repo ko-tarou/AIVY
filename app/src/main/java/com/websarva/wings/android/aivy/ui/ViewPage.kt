@@ -31,6 +31,7 @@ import com.websarva.wings.android.aivy.ui.ViewPageParts.ViewHeader
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Add
+import com.websarva.wings.android.aivy.ui.ViewPageParts.Remove
 
 
 @Composable
@@ -55,7 +56,10 @@ fun ViewPage(navController:NavController){
                 if(isToolbarVisible) {
                     Mail()
                     Present()
-
+                    Remove(
+                        isToolbarVisible = isToolbarVisible,
+                        onTool = {isToolbarVisible = !isToolbarVisible}
+                    )
                 }else{
                     Add(
                         isToolbarVisible = isToolbarVisible,
