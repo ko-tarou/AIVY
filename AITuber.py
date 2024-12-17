@@ -7,21 +7,23 @@ import soundfile as sf
 import time
 
 
-def fetch_chat_id(youtube_api_key,live_id):
+def get_chat_id(youtube_api_key, live_id):
     params = {
         "key":youtube_api_key,
         "part":"liveStreamingDetails",
         "id":live_id
     }
-    res = requests.get("https:www.googleapis.com/youtube/v3/videos",
+    res = requests.get("https://www.googleapis.com/youtube/v3/videos",
                 params=params)
-    chat_id = (res.josn()
-              ["items"][0]
-              ["liveStreamingDerails"]
-              ["activeLiveChatId"])
+    #print(res.json())
+    chat_id = (res.json()
+               ["items"][0]
+               ["liveStreamingDetails"]
+               ["activeLiveChatId"]
+               )
     return chat_id
 
-def get_latest_comment(youtube_api_key,chat_id): #youtubeから最新コメ取得
+def get_latest_comment(youtube_api_key, chat_id):
     params = {
         "key":youtube_api_key,
         "part":"snippet",
@@ -29,15 +31,17 @@ def get_latest_comment(youtube_api_key,chat_id): #youtubeから最新コメ取�
         "maxResults":100,
     }
     res = requests.get(
-        "https://www.googleapis.com/youtube/v3/liveChat/masseges",
+        "https://www.googleapis.com/youtube/v3/liveChat/messages",
         params=params)
     resource = res.json()
-    comments = [x["shippet"]["textMessageDetails"]["messageText"]
+    #pprint.pprint(resource) #持ってきたjsonファイルの中身確認
+    comments = [x["snippet"]["textMessageDetails"]["messageText"]
                 for x in resource["items"]]
     comment = comments[-1]
     return comment
+    #print(comments) #取得したコメントのリスト
 
-def get_rely(client,comment): #返信用テキスト生成
+def get_reply(client, comment):
     prompt = "今、簡単な会話をしています。以下のコメントに返信する短文を返してください。"
     res = client.chat.completions.create(
         model="gpt-4o-mini",
@@ -49,7 +53,8 @@ def get_rely(client,comment): #返信用テキスト生成
             )
         }]
     )
-    reply = res.choices[0].message.cotent
+    reply = res.choices[0].message.content
+    print(reply) #返信内容の確認
     return reply
 
 def play_reply(comment, reply):
@@ -59,7 +64,7 @@ def play_reply(comment, reply):
         params=params
     )
     res = requests.post(
-        f'http://127.0.0.1:50021/audio_query',
+        f'http://127.0.0.1:50021/synthesis',
         params=params,
         json=res.json()
     )
@@ -72,25 +77,22 @@ def play_reply(comment, reply):
     sd.wait()
 
 def main():
-    youtube_api_key = os.getenv("AIzaSyA6qs0QgYWQ1DoxHBJfqcfKQmPVInoyIiU") #youtubeAPIを入力(google Cloudから取得)
-    youtube_url = ("https://www.youtube.com/live/fSWQlPFfyVo")
-    base_url = "https://www.youtube.com/live/"
-    live_id = "fSWQlPFfyVo"#youtube_url.replace(base_url, "") #liveIDを取得
-    chat_id = fetch_chat_id(youtube_api_key,live_id)
-    comment = get_latest_comment(youtube_api_key,live_id)
+    youtube_api_key = os.getenv("YOUTUBE_API_KEY") #youtubeAPIを入力(google Cloudから取得) #AIzaSyD84Mzp3Yauc83OCyUOg5XSPAZ2ATHnVOc
+    live_id = "InnBtgjAqyU"
+    chat_id = get_chat_id(youtube_api_key,live_id)
     client = OpenAI()
-    reply = get_rely(client,comment)
-
-    pre_comment = ""
+    pre_comment = ''
     while True:
-        comment = get_latest_comment(youtube_api_key, chat_id)
+        #コメント取得
+        comment = get_latest_comment(youtube_api_key,chat_id)
         if pre_comment != comment:
-            reply = get_rely(client,comment)
+            reply = get_reply(client, comment)
             play_reply(comment, reply)
-
+            pre_comment = comment
         time.sleep(10)
 
-
+    
+    
 
 
 
