@@ -13,33 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.websarva.wings.android.aivy.ui.SelectPageParts.SelectHeader
 import com.websarva.wings.android.aivy.ui.common.HeaderCommon
 
 @Composable
 fun SelectPage(navController: NavController){
     Column {
-        HeaderCommon(
-            title = "",
-            actions = {
-                IconButton(
-                    onClick = {navController.navigate("viewpage")},
-                    modifier = Modifier.offset(y = -10.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Language,
-                        contentDescription = "Language Icon"
-                    )
-                }
-                IconButton(
-                    onClick = {navController.navigate("viewpage")},
-                    modifier = Modifier.offset(y = -10.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.MoreHoriz,
-                        contentDescription = "MoreHoriz Icon"
-                    )
-                }
-            }
-        )
+        SelectHeader(navController = navController)
     }
 }
