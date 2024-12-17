@@ -32,12 +32,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Add
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Remove
+import com.websarva.wings.android.aivy.ui.ViewPageParts.Toolbar
 
 
 @Composable
 fun ViewPage(navController:NavController){
-
-    var isToolbarVisible by remember { mutableStateOf(false) }
 
     Column {
         ViewHeader(navController = navController)
@@ -53,19 +52,17 @@ fun ViewPage(navController:NavController){
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Bottom
             ) {
-                if(isToolbarVisible) {
-                    Mail()
-                    Present()
-                    Remove(
-                        isToolbarVisible = isToolbarVisible,
-                        onTool = {isToolbarVisible = !isToolbarVisible}
-                    )
-                }else{
-                    Add(
-                        isToolbarVisible = isToolbarVisible,
-                        onTool = {isToolbarVisible = !isToolbarVisible}
-                    )
-                }
+                Toolbar()
+            }
+
+            //message
+            Column (
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Bottom
+            ){
+                Mail()
             }
         }
     }
