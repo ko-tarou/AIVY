@@ -21,35 +21,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Mail
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Present
-import com.websarva.wings.android.aivy.ui.common.Header
+import com.websarva.wings.android.aivy.ui.ViewPageParts.ViewHeader
+
 
 @Composable
 fun ViewPage(navController:NavController){
     Column {
-        Header(
-            title = "",
-            actions = {
-                IconButton(
-                    onClick = {navController.navigate("selectpage")},
-                    modifier = Modifier.offset(y = -10.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Language,
-                        contentDescription = "Language Icon"
-                    )
-                }
-                IconButton(
-                    onClick = {navController.navigate("selectpage")},
-                    modifier = Modifier.offset(y = -10.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.MoreHoriz,
-                        contentDescription = "MoreHoriz Icon"
-                    )
-                }
-            }
-        )
-
+        ViewHeader(navController = navController)
 
         Box(
             modifier = Modifier
