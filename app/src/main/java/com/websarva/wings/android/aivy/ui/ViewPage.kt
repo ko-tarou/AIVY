@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.websarva.wings.android.aivy.ui.ViewPageParts.Mail
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Present
 import com.websarva.wings.android.aivy.ui.common.Header
 
@@ -61,6 +62,7 @@ fun ViewPage(navController:NavController){
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Bottom
             ) {
+                Mail()
                 Present()
             }
         }
