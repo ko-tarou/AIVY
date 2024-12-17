@@ -2,7 +2,11 @@ package com.websarva.wings.android.aivy.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.offset
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,13 +20,25 @@ import com.websarva.wings.android.aivy.ui.common.Header
 fun ViewPage(navController:NavController){
     Column {
         Header(
-            title = "View Page",
+            title = "",
             actions = {
                 IconButton(
                     onClick = {navController.navigate("selectpage")},
-                    modifier = Modifier.offset(y = -20.dp)
+                    modifier = Modifier.offset(y = -10.dp)
                 ) {
-                    Text("go to select")
+                    Icon(
+                        imageVector = Icons.Filled.Language,
+                        contentDescription = "Language Icon"
+                    )
+                }
+                IconButton(
+                    onClick = {navController.navigate("selectpage")},
+                    modifier = Modifier.offset(y = -10.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.MoreHoriz,
+                        contentDescription = "MoreHoriz Icon"
+                    )
                 }
             }
         )
