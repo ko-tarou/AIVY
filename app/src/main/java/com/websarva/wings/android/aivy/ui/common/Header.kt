@@ -18,7 +18,7 @@ import com.websarva.wings.android.aivy.ui.theme.HeaderColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Header(
+fun HeaderCommon(
     title: String = "",
     actions: @Composable RowScope.() -> Unit = {} // actions引数でボタンやアイコンを表示
 ) {
