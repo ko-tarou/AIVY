@@ -43,7 +43,9 @@ fun Header(
             containerColor = HeaderColor, // ヘッダー背景色
             titleContentColor = Color.White // タイトル文字色
         ),
-        actions = actions, // ヘッダー右側に表示する要素
+        actions = {
+            actions()
+        }, // ヘッダー右側に表示する要素
         modifier = Modifier.height(56.dp) // ヘッダーの高さ
     )
 }
