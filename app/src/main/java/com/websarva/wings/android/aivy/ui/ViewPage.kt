@@ -66,6 +66,8 @@ fun ViewPage(navController:NavController){
             ){
                 MessageBox()
             }
+
+
         }
     }
 }
