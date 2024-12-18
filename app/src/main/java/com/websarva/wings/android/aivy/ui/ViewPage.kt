@@ -31,6 +31,7 @@ import com.websarva.wings.android.aivy.ui.ViewPageParts.ViewHeader
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Add
+import com.websarva.wings.android.aivy.ui.ViewPageParts.IsEye
 import com.websarva.wings.android.aivy.ui.ViewPageParts.MessageBox
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Remove
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Toolbar
@@ -59,13 +60,23 @@ fun ViewPage(navController:NavController){
             //message
             Column (
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Bottom
             ){
                 MessageBox()
             }
+
+            //isEye
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Top,
+            ){
+                IsEye()
+            }
+
 
 
         }

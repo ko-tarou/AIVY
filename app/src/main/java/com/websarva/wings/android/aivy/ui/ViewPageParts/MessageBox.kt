@@ -38,41 +38,45 @@ fun MessageBox() {
 
     var text by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
-
-    Column(
+    Column (
         modifier = Modifier
-            .height(100.dp)
-            .width(250.dp)
-            .border(1.dp,Color.DarkGray)
-            .background(Color.LightGray)
-            .padding(8.dp)
+            .padding(16.dp)
     ){
-        BasicTextField(
-            value = text,
-            onValueChange = {text = it},
-            textStyle = TextStyle(
-                color = Color.DarkGray,
-                fontSize = 18.sp
-            ),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus()
-                }
-            ),
-            decorationBox = {innerTextField ->
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start
-                ){
-                    innerTextField()
-                }
-            },
+        Column(
             modifier = Modifier
-                .padding(16.dp)
-                .fillMaxSize()
-        )
+                .height(100.dp)
+                .width(250.dp)
+                .border(1.dp, Color.DarkGray)
+                .background(Color.LightGray)
+                .padding(8.dp)
+        ) {
+            BasicTextField(
+                value = text,
+                onValueChange = { text = it },
+                textStyle = TextStyle(
+                    color = Color.DarkGray,
+                    fontSize = 18.sp
+                ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                ),
+                decorationBox = { innerTextField ->
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        innerTextField()
+                    }
+                },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxSize()
+            )
+        }
     }
 }
