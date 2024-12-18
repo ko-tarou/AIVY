@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.websarva.wings.android.aivy.ui.SelectPageParts.CreateButton
 import com.websarva.wings.android.aivy.ui.SelectPageParts.DetailsInput
 import com.websarva.wings.android.aivy.ui.SelectPageParts.PeopleSelect
 import com.websarva.wings.android.aivy.ui.SelectPageParts.SelectHeader
@@ -42,6 +43,7 @@ fun SelectPage(navController: NavController){
             ){
                 PeopleSelect()
                 DetailsInput()
+                CreateButton()
             }
         }
     }
