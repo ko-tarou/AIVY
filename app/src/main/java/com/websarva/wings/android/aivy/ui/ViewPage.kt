@@ -59,13 +59,23 @@ fun ViewPage(navController:NavController){
             //message
             Column (
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Bottom
             ){
                 MessageBox()
             }
+
+            //isEye
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Top,
+            ){
+                Present()
+            }
+
 
 
         }
