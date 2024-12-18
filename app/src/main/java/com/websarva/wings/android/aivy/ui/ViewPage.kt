@@ -31,6 +31,7 @@ import com.websarva.wings.android.aivy.ui.ViewPageParts.ViewHeader
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Add
+import com.websarva.wings.android.aivy.ui.ViewPageParts.IsEye
 import com.websarva.wings.android.aivy.ui.ViewPageParts.MessageBox
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Remove
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Toolbar
@@ -73,7 +74,7 @@ fun ViewPage(navController:NavController){
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Top,
             ){
-                Present()
+                IsEye()
             }
 
 
