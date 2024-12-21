@@ -25,19 +25,20 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.*
 import androidx.compose.ui.draw.clip
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.websarva.wings.android.aivy.R
+import com.websarva.wings.android.aivy.ui.ViewPageParts.ViewHeader
+
+
 
 @Composable
-fun AccountScreen() {
-    var userName by remember { mutableStateOf("名前") }
+fun AccountScreen(
+    navController:NavController
+) {
+    var userName by remember { mutableStateOf("") }
     var showOtherCharacters by remember { mutableStateOf(false) }
     var favoriteCharacter by remember { mutableStateOf("キャラクター名") }
     var description by remember { mutableStateOf("キャラクターの説明文") }
@@ -45,15 +46,26 @@ fun AccountScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 24.dp)
-            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 16.dp)
+            .background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Header(title = userName, onSettingsClick = { println("設定ボタンがクリックされました") })
-        Spacer(modifier = Modifier.height(16.dp))
-        IconSettingSection()
-        Spacer(modifier = Modifier.height(16.dp))
-        NameSettingSection(userName) { newName -> userName = newName }
-        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 0.dp), // 全体を下に移動
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ViewHeader(navController = navController)
+            ProfileSection(
+                userName = userName,
+                onUserNameChange = { userName = it },
+                onSettingsClick = { println("設定ボタンがクリックされました") }
+            )
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
         if (showOtherCharacters) {
             OtherCharactersSection { showOtherCharacters = false }
         } else {
@@ -67,84 +79,80 @@ fun AccountScreen() {
 }
 
 @Composable
-fun Header(title: String, onSettingsClick: () -> Unit) {
-    Row(
+fun ProfileSection(
+    userName: String,
+    onUserNameChange: (String) -> Unit,
+    onSettingsClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(top = 16.dp) // 全体の上下移動を調整
     ) {
-        Text(text = title, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        IconButton(onClick = onSettingsClick) {
+        // アイコンセクション
+        Box(
+            modifier = Modifier
+                .size(120.dp)
+                .background(Color.LightGray, shape = CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.watermark),
+                contentDescription = "プロフィール画像",
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape)
+            )
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "アイコンを追加",
+                tint = Color.Black,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .size(30.dp)
+                    .clip(CircleShape)
+                    .background(Color.White)
+                    .clickable { println("画像選択処理") }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp)) // アイコンと名前フィールドの間のスペース
+
+        // 名前入力フィールド
+        NameInputField(userName, onUserNameChange)
+
+        // 設定ボタン
+        IconButton(
+            onClick = onSettingsClick,
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(top = 8.dp)
+        ) {
             Icon(Icons.Default.Settings, contentDescription = "設定")
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IconSettingSection() {
-    val profileImage: Painter = getProfileImage()
-
-    Box(
+fun NameInputField(userName: String, onUserNameChange: (String) -> Unit) {
+    OutlinedTextField(
+        value = userName,
+        onValueChange = onUserNameChange,
         modifier = Modifier
-            .size(100.dp)
-            .background(Color.Gray, shape = CircleShape),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = profileImage,
-            contentDescription = "プロフィール画像",
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
+            .fillMaxWidth()
+            .background(
+                if (userName.isNotEmpty()) Color.LightGray.copy(alpha = 0.2f) else Color.Transparent,
+                shape = MaterialTheme.shapes.medium
+            ),
+        placeholder = { Text("名前を入力") }, // プレースホルダー
+        singleLine = true,
+        textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary
         )
-        Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = "アイコンを追加",
-            tint = Color.Black,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .size(30.dp)
-                .clip(CircleShape)
-                .background(Color.White)
-                .clickable { println("画像選択処理") }
-        )
-    }
-}
-
-@Composable
-fun getProfileImage(): Painter {
-    return runCatching {
-        painterResource(id = R.drawable.watermark)
-    }.getOrElse {
-        painterResource(id = R.drawable.ic_launcher_foreground)
-    }
-}
-
-@Composable
-fun NameSettingSection(name: String, onNameChange: (String) -> Unit) {
-    var isEditing by remember { mutableStateOf(false) }
-    if (isEditing) {
-        TextField(
-            value = name,
-            onValueChange = { onNameChange(it) },
-            modifier = Modifier.fillMaxWidth(),
-            textStyle = TextStyle(fontSize = 16.sp),
-            singleLine = true
-        )
-    } else {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .clickable { isEditing = true },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = name, fontSize = 18.sp, modifier = Modifier.weight(1f))
-            Icon(Icons.Default.Edit, contentDescription = "名前を編集", tint = Color.Gray)
-        }
-    }
+    )
 }
 
 @Composable
@@ -172,10 +180,9 @@ fun FavoriteCharacterSection(
             Spacer(modifier = Modifier.weight(1f))
             IconButton(onClick = onSwitchToOthers) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowForward, // AutoMirroredを削除
+                    imageVector = Icons.Filled.ArrowForward,
                     contentDescription = "その他キャラクター"
                 )
-
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -189,7 +196,6 @@ fun OtherCharactersSection(onBack: () -> Unit) {
         Pair(R.drawable.watermark, "キャラ ${index + 1}")
     }
 
-
     Column {
         Text(
             "その他のキャラクター",
@@ -202,12 +208,11 @@ fun OtherCharactersSection(onBack: () -> Unit) {
         ) {
             items(items = characters) { character ->
                 CharacterItem(
-                    imageResId = character.first, // Pairから画像IDを取得
-                    name = character.second      // Pairから名前を取得
+                    imageResId = character.first,
+                    name = character.second
                 )
             }
         }
-
         Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = onBack,
@@ -252,5 +257,9 @@ fun CharacterItem(imageResId: Int, name: String) {
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
 @Composable
 fun AccountScreenPreview() {
-    AccountScreen()
+    val navController = rememberNavController()
+
+    // AccountScreen に渡す
+    AccountScreen(navController = navController)
 }
+
