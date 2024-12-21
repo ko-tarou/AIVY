@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1009150248104",
+    "firebase_url": "https://aivy-397ff-default-rtdb.firebaseio.com",
+    "project_id": "aivy-397ff",
+    "storage_bucket": "aivy-397ff.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009150248104:android:7b3820fbfe09d3006fae9d",
+        "android_client_info": {
+          "package_name": "com.websarva.wings.android.aivy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAQLPWZHzAFGJPCcnqM8_qie2W5-cFnrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

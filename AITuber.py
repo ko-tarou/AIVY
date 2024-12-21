@@ -1,64 +1,45 @@
-import requests
+import firebase_admin
+from firebase_admin import credentials, db
 import os
-import pprint
 from openai import OpenAI
 import sounddevice as sd
 import soundfile as sf
 import time
 
 
-def get_chat_id(youtube_api_key, live_id):
-    params = {
-        "key":youtube_api_key,
-        "part":"liveStreamingDetails",
-        "id":live_id
-    }
-    res = requests.get("https://www.googleapis.com/youtube/v3/videos",
-                params=params)
-    #print(res.json())
-    chat_id = (res.json()
-               ["items"][0]
-               ["liveStreamingDetails"]
-               ["activeLiveChatId"]
-               )
-    return chat_id
+def initialize_firebase():
+    # FirebaseのサービスアカウントキーのJSONファイルへのパスを指定
+    firebase_credentials_path = "aivy-397ff-firebase-adminsdk-90c4u-7aee19f25e.json"  # 環境変数から取得
+    database_url = "https://aivy-397ff-default-rtdb.firebaseio.com/"  # FirebaseのデータベースURL
+    cred = credentials.Certificate(firebase_credentials_path)
+    firebase_admin.initialize_app(cred, {"databaseURL": database_url})
 
-def get_latest_comment(youtube_api_key, chat_id):
-    params = {
-        "key":youtube_api_key,
-        "part":"snippet",
-        "liveChatId":chat_id,
-        "maxResults":100,
-    }
-    res = requests.get(
-        "https://www.googleapis.com/youtube/v3/liveChat/messages",
-        params=params)
-    resource = res.json()
-    #pprint.pprint(resource) #持ってきたjsonファイルの中身確認
-    comments = [x["snippet"]["textMessageDetails"]["messageText"]
-                for x in resource["items"]]
-    comment = comments[-1]
-    return comment
-    #print(comments) #取得したコメントのリスト
+
+def get_latest_comment_from_firebase():
+    # FirebaseのRealtime Databaseからデータを取得
+    ref = db.reference("message")  # messageノードを参照
+    latest_comment = ref.get()  # 文字列を直接取得
+    return latest_comment
+
 
 def get_reply(client, comment):
     prompt = "今、簡単な会話をしています。以下のコメントに返信する短文を返してください。"
     res = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{
-            "role":"user",
-            "content":(
-                f"{prompt}"
-                f"{comment}"
+            "role": "user",
+            "content": (
+                f"{prompt} {comment}"
             )
         }]
     )
     reply = res.choices[0].message.content
-    print(reply) #返信内容の確認
+    print(reply)  # 返信内容の確認
     return reply
 
+
 def play_reply(comment, reply):
-    params = {"text": f"{comment} {reply}","speaker": 3}
+    params = {"text": f"{comment} {reply}", "speaker": 3}
     res = requests.post(
         f'http://127.0.0.1:50021/audio_query',
         params=params
@@ -76,27 +57,21 @@ def play_reply(comment, reply):
     sd.play(data, fs)
     sd.wait()
 
+
 def main():
-    youtube_api_key = os.getenv("YOUTUBE_API_KEY") #youtubeAPIを入力(google Cloudから取得) #AIzaSyD84Mzp3Yauc83OCyUOg5XSPAZ2ATHnVOc
-    live_id = "InnBtgjAqyU"
-    chat_id = get_chat_id(youtube_api_key,live_id)
+    initialize_firebase()  # Firebase初期化
+
     client = OpenAI()
     pre_comment = ''
     while True:
-        #コメント取得
-        comment = get_latest_comment(youtube_api_key,chat_id)
-        if pre_comment != comment:
+        # Firebaseからコメントを取得
+        comment = get_latest_comment_from_firebase()
+        if comment and pre_comment != comment:
             reply = get_reply(client, comment)
             play_reply(comment, reply)
             pre_comment = comment
         time.sleep(10)
 
-    
-    
-
-
-
 
 if __name__ == "__main__":
     main()
-    

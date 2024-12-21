@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -54,6 +56,8 @@ dependencies {
     implementation(libs.annotations)
     implementation(libs.annotations)
     implementation(libs.generativeai)
+    implementation(libs.firebase.database)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -65,4 +69,16 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
     implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.compose.material:material-icons-extended:1.6.0")
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
+
+    //ImportAIVY
+    implementation("com.google.android.exoplayer:exoplayer:2.18.1")
+    implementation("com.google.android.exoplayer:extension-rtmp:2.18.1")
+
 }
