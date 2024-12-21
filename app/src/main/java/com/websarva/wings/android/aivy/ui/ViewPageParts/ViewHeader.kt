@@ -77,7 +77,7 @@ fun ViewHeader(navController: NavController) {
                     DropdownMenuItem(
                         text = { androidx.compose.material3.Text("Account") },
                         onClick = {
-                            // Handle Account option
+                            navController.navigate("accountpage")
                             isMoreMenuExpanded = false
                         }
                     )
@@ -85,6 +85,13 @@ fun ViewHeader(navController: NavController) {
                         text = { androidx.compose.material3.Text("Create Vtuber") },
                         onClick = {
                             navController.navigate("selectpage")
+                            isMoreMenuExpanded = false
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { androidx.compose.material3.Text("View Vtuber") },
+                        onClick = {
+                            navController.navigate("viewpage")
                             isMoreMenuExpanded = false
                         }
                     )
