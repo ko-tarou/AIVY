@@ -39,10 +39,15 @@ import com.websarva.wings.android.aivy.ui.ViewPageParts.MessageBox
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Remove
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Toolbar
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Video
+import com.websarva.wings.android.aivy.ui.ViewPageParts.log1
+import com.websarva.wings.android.aivy.ui.ViewPageParts.log2
+import com.websarva.wings.android.aivy.ui.ViewPageParts.log3
 
 
 @Composable
 fun ViewPage(navController:NavController){
+
+    var isInputFocused by remember { mutableStateOf(false) }
 
     Column {
         ViewHeader(navController = navController)
@@ -51,7 +56,6 @@ fun ViewPage(navController:NavController){
             modifier = Modifier
                 .weight(1f)
         ) {
-
             //video
 //            Video()
 
@@ -62,7 +66,7 @@ fun ViewPage(navController:NavController){
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Bottom
             ) {
-                Toolbar()
+                Toolbar(isInputFocused = isInputFocused)
             }
 
             //messaget
@@ -72,9 +76,12 @@ fun ViewPage(navController:NavController){
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Bottom
             ){
-                MessageBox()
+                MessageBox(
+                    onFocusChanged = { isFocused ->
+                        isInputFocused = isFocused // 子からフォーカス状態を受け取る
+                    }
+                )
             }
-
             //isEye
             Column(
                 modifier = Modifier
