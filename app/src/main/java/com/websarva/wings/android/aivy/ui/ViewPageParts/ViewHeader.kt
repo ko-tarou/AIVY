@@ -43,20 +43,37 @@ fun ViewHeader(navController: NavController) {
                     expanded = isLanguageMenuExpanded,
                     onDismissRequest = { isLanguageMenuExpanded = false }
                 ) {
-                    DropdownMenuItem(
-                        text = { androidx.compose.material3.Text("English") },
-                        onClick = {
-                            currentLanguage = "English" // 言語設定を変更
-                            isLanguageMenuExpanded = false
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { androidx.compose.material3.Text("Japanese") },
-                        onClick = {
-                            currentLanguage = "Japanese" // 言語設定を変更
-                            isLanguageMenuExpanded = false
-                        }
-                    )
+                    if(currentLanguage == "English"){
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("English") },
+                            onClick = {
+                                currentLanguage = "English" // 言語設定を変更
+                                isLanguageMenuExpanded = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("Japanese") },
+                            onClick = {
+                                currentLanguage = "Japanese" // 言語設定を変更
+                                isLanguageMenuExpanded = false
+                            }
+                        )
+                    }else if(currentLanguage == "Japanese"){
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("日本語") },
+                            onClick = {
+                                currentLanguage = "Japanese" // 言語設定を変更
+                                isLanguageMenuExpanded = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("英語") },
+                            onClick = {
+                                currentLanguage = "English" // 言語設定を変更
+                                isLanguageMenuExpanded = false
+                            }
+                        )
+                    }
                 }
 
                 // MoreHoriz Icon Button with Dropdown
@@ -74,27 +91,51 @@ fun ViewHeader(navController: NavController) {
                     expanded = isMoreMenuExpanded,
                     onDismissRequest = { isMoreMenuExpanded = false }
                 ) {
-                    DropdownMenuItem(
-                        text = { androidx.compose.material3.Text("Account") },
-                        onClick = {
-                            navController.navigate("accountpage")
-                            isMoreMenuExpanded = false
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { androidx.compose.material3.Text("Create Vtuber") },
-                        onClick = {
-                            navController.navigate("selectpage")
-                            isMoreMenuExpanded = false
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { androidx.compose.material3.Text("View Vtuber") },
-                        onClick = {
-                            navController.navigate("viewpage")
-                            isMoreMenuExpanded = false
-                        }
-                    )
+                    if(currentLanguage == "English"){
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("Account") },
+                            onClick = {
+                                navController.navigate("accountpage")
+                                isMoreMenuExpanded = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("Create Vtuber") },
+                            onClick = {
+                                navController.navigate("selectpage")
+                                isMoreMenuExpanded = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("View Vtuber") },
+                            onClick = {
+                                navController.navigate("viewpage")
+                                isMoreMenuExpanded = false
+                            }
+                        )
+                    }else if(currentLanguage == "Japanese"){
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("アカウント") },
+                            onClick = {
+                                navController.navigate("accountpage")
+                                isMoreMenuExpanded = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("Vtuber作成") },
+                            onClick = {
+                                navController.navigate("selectpage")
+                                isMoreMenuExpanded = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { androidx.compose.material3.Text("Vtuber閲覧") },
+                            onClick = {
+                                navController.navigate("viewpage")
+                                isMoreMenuExpanded = false
+                            }
+                        )
+                    }
                 }
             }
         )
