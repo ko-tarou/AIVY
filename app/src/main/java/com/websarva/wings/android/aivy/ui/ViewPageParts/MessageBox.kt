@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
@@ -43,17 +44,33 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 
+// グローバル変数としてログを保持
+var log1 by mutableStateOf<String?>(null)
+var log2 by mutableStateOf<String?>(null)
+var log3 by mutableStateOf<String?>(null)
 
 @Composable
-fun MessageBox() {
-
+fun MessageBox(
+    onFocusChanged: (Boolean) -> Unit // フォーカス状態を通知するコールバック
+) {
     var text by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
-    Column (
+
+    Column(
+        verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
-            .padding(start = 16.dp,bottom = 16.dp)
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        focusManager.clearFocus() // 他の場所をタッチしたときにフォーカス解除
+                        onFocusChanged(false) // フォーカス解除を通知
+                    }
+                )
+            }
+            .padding(start = 16.dp, bottom = 16.dp)
             .width(250.dp)
-    ){
+    ) {
         Row {
             BasicTextField(
                 value = text,
@@ -63,11 +80,17 @@ fun MessageBox() {
                     fontSize = 18.sp
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Send // キーボードのボタンを送信に変更
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
+                    onSend = {
+                        if (text.isNotBlank()) { // 入力が空でないかチェック
+                            Firebase.database.reference.child("message").setValue(text)
+                            updateLogs(text) // ログを更新
+                            text = "" // 入力フィールドをクリア
+                            focusManager.clearFocus() // キーボードを閉じる
+                            onFocusChanged(false) // フォーカス解除を通知
+                        }
                     }
                 ),
                 decorationBox = { innerTextField ->
@@ -83,29 +106,20 @@ fun MessageBox() {
                     }
                 },
                 modifier = Modifier
-                    .heightIn(min = 56.dp,max = 300.dp)
-                    .width(170.dp)
+                    .heightIn(min = 56.dp, max = 300.dp)
+                    .width(250.dp)
+                    .onFocusChanged { focusState ->
+                        onFocusChanged(focusState.isFocused) // フォーカス状態を通知
+                    }
             )
-
-
-            Button(
-                onClick = {
-                    Firebase.database.reference.child("message").setValue(text)
-                    text = ""
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.Black
-                ),
-                modifier = Modifier
-                    .width(70.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowUpward,
-                    tint = Color.Black,
-                    contentDescription = "Send Message",
-                )
-            }
         }
     }
 }
+
+// ログを更新する関数
+fun updateLogs(newMessage: String) {
+    log3 = log2 // 古いログを1つずらす
+    log2 = log1
+    log1 = newMessage // 新しいメッセージを最新ログに
+}
+
