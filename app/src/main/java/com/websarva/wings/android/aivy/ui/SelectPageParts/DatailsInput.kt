@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import com.websarva.wings.android.aivy.ui.ViewPageParts.currentLanguage
 import com.websarva.wings.android.aivy.ui.theme.DatailsColor
 import com.websarva.wings.android.aivy.ui.theme.HeaderColor
 
@@ -114,7 +115,7 @@ fun DetailsInput(navController: NavController) {
                 contentPadding = PaddingValues(0.dp),
             ) {
                 Text(
-                    text = "作成",
+                    text = if(currentLanguage == "English") "Create" else "作成",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )

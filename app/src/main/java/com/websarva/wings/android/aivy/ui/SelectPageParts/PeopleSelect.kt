@@ -53,6 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import com.websarva.wings.android.aivy.ui.ViewPageParts.currentLanguage
 import com.websarva.wings.android.aivy.ui.theme.DatailsColor
 
 @Composable
@@ -197,7 +198,12 @@ fun PeopleSelect(){
 
 @Composable
 fun AnimatedToggleTabLayout(selectedTab: Int, onTabSelected: (Int) -> Unit) {
-    val tabItems = listOf("女性", "男性")
+    val tabItems = when (currentLanguage) {
+        "Japanese" -> listOf("女性", "男性")
+        "English" -> listOf("Female", "Male")
+        else -> listOf("Unknown") // デフォルト値（オプション）
+    }
+
 
     // タブの1つの幅を計算
     val tabWidthPx = remember { mutableStateOf(0f) } // Px単位で保持
