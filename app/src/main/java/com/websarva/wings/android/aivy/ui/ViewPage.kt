@@ -38,6 +38,7 @@ import com.websarva.wings.android.aivy.ui.ViewPageParts.IsEye
 import com.websarva.wings.android.aivy.ui.ViewPageParts.MessageBox
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Remove
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Toolbar
+import com.websarva.wings.android.aivy.ui.ViewPageParts.Video
 
 
 @Composable
@@ -50,13 +51,9 @@ fun ViewPage(navController:NavController){
             modifier = Modifier
                 .weight(1f)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                ExoPlayerView("rtmp://0.tcp.jp.ngrok.io:17324/live/test")
-            }
+
+            //video
+            Video()
 
             //toolbar
             Column(
@@ -68,7 +65,7 @@ fun ViewPage(navController:NavController){
                 Toolbar()
             }
 
-            //message
+            //messaget
             Column (
                 modifier = Modifier
                     .fillMaxSize(),
@@ -86,17 +83,6 @@ fun ViewPage(navController:NavController){
                 verticalArrangement = Arrangement.Top,
             ){
                 IsEye()
-            }
-
-            Column {
-                Button(
-                    onClick = {
-                        // Firebase に値を書き込む
-                        Firebase.database.reference.child("button").setValue(true)
-                    }
-                ) {
-                    Text("値を true に設定")
-                }
             }
         }
     }

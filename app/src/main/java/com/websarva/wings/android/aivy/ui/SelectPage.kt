@@ -42,8 +42,7 @@ fun SelectPage(navController: NavController){
                     .background(HeaderColor)
             ){
                 PeopleSelect()
-                DetailsInput()
-                CreateButton()
+                DetailsInput(navController = navController)
             }
         }
     }
