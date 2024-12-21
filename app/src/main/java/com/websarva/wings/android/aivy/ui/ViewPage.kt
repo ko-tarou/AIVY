@@ -1,8 +1,10 @@
 package com.websarva.wings.android.aivy.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -30,8 +32,11 @@ import com.websarva.wings.android.aivy.ui.ViewPageParts.Present
 import com.websarva.wings.android.aivy.ui.ViewPageParts.ViewHeader
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import com.websarva.wings.android.aivy.R
 import com.websarva.wings.android.aivy.network.ExoPlayerView
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Add
 import com.websarva.wings.android.aivy.ui.ViewPageParts.IsEye
@@ -39,50 +44,73 @@ import com.websarva.wings.android.aivy.ui.ViewPageParts.MessageBox
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Remove
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Toolbar
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Video
+import com.websarva.wings.android.aivy.ui.ViewPageParts.log1
+import com.websarva.wings.android.aivy.ui.ViewPageParts.log2
+import com.websarva.wings.android.aivy.ui.ViewPageParts.log3
 
 
 @Composable
 fun ViewPage(navController:NavController){
 
-    Column {
-        ViewHeader(navController = navController)
-
-        Box(
-            modifier = Modifier
-                .weight(1f)
-        ) {
-
-            //video
-//            Video()
-
-            //toolbar
-            Column(
+    var isInputFocused by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ){
+        Column (
+            verticalArrangement = Arrangement.Bottom
+        ){
+            Image(
+                painterResource(id = R.drawable.okumono_sf30),
+                contentDescription = "okumono_sf30",
                 modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Bottom
+                    .fillMaxHeight(),
+                contentScale = ContentScale.Crop,
+            )
+        }
+
+        Column {
+            ViewHeader(navController = navController)
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
             ) {
-                Toolbar()
-            }
+                //video
+    //            Video()
 
-            //messaget
-            Column (
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Bottom
-            ){
-                MessageBox()
-            }
+                //toolbar
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Toolbar(isInputFocused = isInputFocused)
+                }
 
-            //isEye
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Top,
-            ){
-                IsEye()
+                //messaget
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    MessageBox(
+                        onFocusChanged = { isFocused ->
+                            isInputFocused = isFocused // 子からフォーカス状態を受け取る
+                        }
+                    )
+                }
+                //isEye
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Top,
+                ) {
+                    IsEye()
+                }
             }
         }
     }
