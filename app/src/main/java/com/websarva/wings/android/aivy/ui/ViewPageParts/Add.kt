@@ -26,7 +26,7 @@ fun Add(
                 contentColor = Color.Black
             ),
             modifier = Modifier
-                .padding(16.dp)
+                .padding(8.dp)
         ) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowUp,
