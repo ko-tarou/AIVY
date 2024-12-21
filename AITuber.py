@@ -1,7 +1,6 @@
 import firebase_admin
 from firebase_admin import credentials, db
 import os
-import pprint
 from openai import OpenAI
 import sounddevice as sd
 import soundfile as sf
@@ -10,20 +9,16 @@ import time
 
 def initialize_firebase():
     # FirebaseのサービスアカウントキーのJSONファイルへのパスを指定
-    firebase_credentials_path = os.getenv("FIREBASE_CREDENTIALS_PATH")  # 環境変数から取得
-    database_url = os.getenv("FIREBASE_DATABASE_URL")  # FirebaseのデータベースURL
+    firebase_credentials_path = "aivy-397ff-firebase-adminsdk-90c4u-7aee19f25e.json"  # 環境変数から取得
+    database_url = "https://aivy-397ff-default-rtdb.firebaseio.com/"  # FirebaseのデータベースURL
     cred = credentials.Certificate(firebase_credentials_path)
     firebase_admin.initialize_app(cred, {"databaseURL": database_url})
 
 
 def get_latest_comment_from_firebase():
     # FirebaseのRealtime Databaseからデータを取得
-    ref = db.reference("comments")  # commentsがデータ保存先
-    data = ref.get()
-    if not data:
-        return None
-    # 最新のコメントを取得 (例: Firebaseに保存されたデータがタイムスタンプ順であると仮定)
-    latest_comment = list(data.values())[-1]["text"]
+    ref = db.reference("message")  # messageノードを参照
+    latest_comment = ref.get()  # 文字列を直接取得
     return latest_comment
 
 
@@ -34,8 +29,7 @@ def get_reply(client, comment):
         messages=[{
             "role": "user",
             "content": (
-                f"{prompt}"
-                f"{comment}"
+                f"{prompt} {comment}"
             )
         }]
     )
