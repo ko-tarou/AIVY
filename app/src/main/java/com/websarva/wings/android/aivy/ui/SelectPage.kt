@@ -69,7 +69,6 @@ fun SelectPage(navController: NavController){
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(20.dp))
-//                        .background(DatailsColor.copy(alpha = 0.15f))
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
