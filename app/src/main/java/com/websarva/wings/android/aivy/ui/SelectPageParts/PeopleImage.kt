@@ -33,7 +33,7 @@ fun PeopleImage(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(100.dp)
-                .border(5.dp, Color.DarkGray, shape = CircleShape)
+                .border(3.dp, Color.DarkGray, shape = CircleShape)
                 .clip(CircleShape)
         )
     }
