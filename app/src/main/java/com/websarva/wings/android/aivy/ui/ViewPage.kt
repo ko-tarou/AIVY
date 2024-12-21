@@ -30,6 +30,8 @@ import com.websarva.wings.android.aivy.ui.ViewPageParts.Present
 import com.websarva.wings.android.aivy.ui.ViewPageParts.ViewHeader
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Add
 import com.websarva.wings.android.aivy.ui.ViewPageParts.IsEye
 import com.websarva.wings.android.aivy.ui.ViewPageParts.MessageBox
@@ -75,6 +77,17 @@ fun ViewPage(navController:NavController){
                 verticalArrangement = Arrangement.Top,
             ){
                 IsEye()
+            }
+
+            Column {
+                Button(
+                    onClick = {
+                        // Firebase に値を書き込む
+                        Firebase.database.reference.child("button").setValue(true)
+                    }
+                ) {
+                    Text("値を true に設定")
+                }
             }
 
 
