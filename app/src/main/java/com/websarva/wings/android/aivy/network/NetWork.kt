@@ -51,7 +51,7 @@ class NetWork : AppCompatActivity() {
         playerView.player = player
 
         // RTMPストリームのURL
-        val videoUrl = "rtmp://0.tcp.ngrok.io:12345/live/teststream"
+        val videoUrl = "rtmp://0.tcp.jp.ngrok.io:17324/live/teststream"
 
         // メディアアイテムを作成
         val mediaItem = MediaItem.fromUri(videoUrl)

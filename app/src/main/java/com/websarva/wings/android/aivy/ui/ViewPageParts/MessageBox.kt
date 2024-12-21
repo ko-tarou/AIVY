@@ -11,12 +11,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -33,6 +40,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 
 
 @Composable
@@ -42,10 +51,10 @@ fun MessageBox() {
     val focusManager = LocalFocusManager.current
     Column (
         modifier = Modifier
-            .padding(16.dp)
+            .padding(start = 16.dp,bottom = 16.dp)
             .width(250.dp)
     ){
-        Column{
+        Row {
             BasicTextField(
                 value = text,
                 onValueChange = { text = it },
@@ -75,8 +84,28 @@ fun MessageBox() {
                 },
                 modifier = Modifier
                     .heightIn(min = 56.dp,max = 300.dp)
-                    .width(250.dp)
+                    .width(170.dp)
             )
+
+
+            Button(
+                onClick = {
+                    Firebase.database.reference.child("message").setValue(text)
+                    text = ""
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = Color.Black
+                ),
+                modifier = Modifier
+                    .width(70.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowUpward,
+                    tint = Color.Black,
+                    contentDescription = "Send Message",
+                )
+            }
         }
     }
 }

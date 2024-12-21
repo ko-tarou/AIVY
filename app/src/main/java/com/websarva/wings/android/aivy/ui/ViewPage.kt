@@ -32,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
+import com.websarva.wings.android.aivy.network.ExoPlayerView
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Add
 import com.websarva.wings.android.aivy.ui.ViewPageParts.IsEye
 import com.websarva.wings.android.aivy.ui.ViewPageParts.MessageBox
@@ -49,6 +50,14 @@ fun ViewPage(navController:NavController){
             modifier = Modifier
                 .weight(1f)
         ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                ExoPlayerView("rtmp://0.tcp.jp.ngrok.io:17324/live/test")
+            }
+
             //toolbar
             Column(
                 modifier = Modifier
@@ -89,9 +98,6 @@ fun ViewPage(navController:NavController){
                     Text("値を true に設定")
                 }
             }
-
-
-
         }
     }
 }
