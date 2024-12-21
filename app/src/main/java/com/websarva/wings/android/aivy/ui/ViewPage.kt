@@ -53,7 +53,7 @@ fun ViewPage(navController:NavController){
         ) {
 
             //video
-            Video()
+//            Video()
 
             //toolbar
             Column(
