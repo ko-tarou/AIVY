@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -41,15 +43,9 @@ fun MessageBox() {
     Column (
         modifier = Modifier
             .padding(16.dp)
+            .width(250.dp)
     ){
-        Column(
-            modifier = Modifier
-                .height(100.dp)
-                .width(250.dp)
-                .border(1.dp, Color.DarkGray)
-                .background(Color.LightGray)
-                .padding(8.dp)
-        ) {
+        Column{
             BasicTextField(
                 value = text,
                 onValueChange = { text = it },
@@ -68,14 +64,18 @@ fun MessageBox() {
                 decorationBox = { innerTextField ->
                     Column(
                         verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.Start
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .background(Color.LightGray.copy(alpha = 0.5f), shape = RoundedCornerShape(12.dp))
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         innerTextField()
                     }
                 },
                 modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxSize()
+                    .heightIn(min = 56.dp,max = 300.dp)
+                    .width(250.dp)
             )
         }
     }
