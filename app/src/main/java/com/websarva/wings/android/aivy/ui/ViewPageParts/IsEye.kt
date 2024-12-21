@@ -13,30 +13,32 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CardGiftcard
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun IsEye() {
-    var isEyeState by remember { mutableStateOf(false) }
+    var isEyeState by rememberSaveable { mutableStateOf(false) }
+
+
+    // `currentLineCount` の値を読み取って Spacer の高さを計算
+    val dynamicSpacerHeight = (((currentLineCount - 1) * 28) + 50).dp
 
     Box(
         modifier = Modifier
@@ -44,12 +46,12 @@ fun IsEye() {
         contentAlignment = Alignment.Center
     ) {
         if (isEyeState) {
-            Column (
+            Column(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Bottom,
                 modifier = Modifier
                     .fillMaxSize()
-            ){
+            ) {
                 Column(
                     modifier = Modifier
                         .width(282.dp)
@@ -81,11 +83,12 @@ fun IsEye() {
                             }
                         },
                         modifier = Modifier
-                            .heightIn(min = 150.dp, max = 400.dp)
+                            .heightIn(min = 50.dp, max = 400.dp)
                             .width(234.dp)
                     )
 
-                    Spacer(modifier = Modifier.height(50.dp))
+                    // Spacerの高さは`currentLineCount`に基づいて決定
+                    Spacer(modifier = Modifier.height(dynamicSpacerHeight))
                 }
             }
         }
