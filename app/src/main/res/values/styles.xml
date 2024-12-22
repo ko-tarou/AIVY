@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- スプラッシュ画面のテーマ -->
+    <style name="SplashTheme" parent="Theme.SplashScreen">
+        <!-- 背景画像を設定 -->
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/aivy_icon</item>
+    </style>
+</resources>

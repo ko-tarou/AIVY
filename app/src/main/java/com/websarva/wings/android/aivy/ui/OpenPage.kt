@@ -1,46 +1,25 @@
-package com.websarva.wings.android.aivy.ui.openpage
+package com.websarva.wings.android.aivy.ui.components
 
-import android.content.Intent
-import android.os.Bundle
 import android.widget.VideoView
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.websarva.wings.android.aivy.MainActivity
-import com.websarva.wings.android.aivy.R
-
-class OpenPageActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            OpenPageScreen(
-                onVideoEnd = { navigateToNextScreen() },
-                onTap = { navigateToNextScreen() }
-            )
-        }
-    }
-
-    private fun navigateToNextScreen() {
-        // 次の画面に遷移（例: MainActivity へ）
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish() // 現在の画面を終了
-    }
-}
 
 @Composable
-fun OpenPageScreen(onVideoEnd: () -> Unit, onTap: () -> Unit) {
+fun OpenPageScreen(
+    videoPath: String, // 動画のパスを外部から渡す
+    onVideoEnd: () -> Unit, // 動画終了時のコールバック
+    onTap: () -> Unit // 画面タップ時のコールバック
+) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -51,7 +30,10 @@ fun OpenPageScreen(onVideoEnd: () -> Unit, onTap: () -> Unit) {
             modifier = Modifier.fillMaxSize()
         ) {
             // 背景動画
-            VideoBackground(onVideoEnd = onVideoEnd)
+            VideoBackground(
+                videoPath = videoPath,
+                onVideoEnd = onVideoEnd
+            )
 
             // テキストを画面の下部に配置
             Column(
@@ -79,11 +61,14 @@ fun OpenPageScreen(onVideoEnd: () -> Unit, onTap: () -> Unit) {
 }
 
 @Composable
-fun VideoBackground(onVideoEnd: () -> Unit) {
+fun VideoBackground(
+    videoPath: String, // 動画のパスを外部から渡す
+    onVideoEnd: () -> Unit // 動画終了時のコールバック
+) {
     AndroidView(
         factory = { context ->
             VideoView(context).apply {
-                setVideoPath("android.resource://" + context.packageName + "/" + R.raw.aivy_white) // 動画ファイル名
+                setVideoPath(videoPath) // 動画パスを設定
                 setOnPreparedListener { mp ->
                     mp.start() // 再生開始
                 }
@@ -93,14 +78,5 @@ fun VideoBackground(onVideoEnd: () -> Unit) {
             }
         },
         modifier = Modifier.fillMaxSize()
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun OpenPagePreview() {
-    OpenPageScreen(
-        onVideoEnd = { /* 動画終了時の処理をプレビューでは実行しない */ },
-        onTap = { /* タップ時の処理をプレビューでは実行しない */ }
     )
 }
