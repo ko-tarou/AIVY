@@ -94,15 +94,37 @@ fun PresentScreen(
             if (isDialogVisible) {
                 AlertDialog(
                     onDismissRequest = { isDialogVisible = false },
-                    title = { Text(text = "送信完了") },
-                    text = { Text(text = "ギフトを送信しました！") },
+                    title = {
+                        Text(
+                            text = "送信完了",
+                            color = Color.White,
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = "ギフトを送信しました！",
+                            color = Color.White // 本文の色を変更
+                        )
+                    },
                     confirmButton = {
-                        TextButton(onClick = { isDialogVisible = false }) {
-                            Text("閉じる")
+                        TextButton(
+                            onClick = { isDialogVisible = false }
+                        ) {
+                            Text(
+                                "閉じる",
+                                color = Color.White // ボタンのテキストの色を変更
+                            )
                         }
-                    }
+                    },
+                    containerColor = HeaderColor.copy(alpha = 0.6f), // ダイアログの背景色を変更
+                    tonalElevation = 8.dp,
+                    modifier = Modifier
+                        .width(300.dp)
+                        .height(200.dp)
+
                 )
             }
+
         }
     }
 }

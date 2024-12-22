@@ -78,7 +78,7 @@ fun ViewPage(navController:NavController){
                     .weight(1f)
             ) {
                 //video
-    //            Video()
+                Video()
 
                 //messaget
                 Column(
