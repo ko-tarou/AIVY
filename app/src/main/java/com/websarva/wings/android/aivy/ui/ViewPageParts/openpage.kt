@@ -83,7 +83,7 @@ fun VideoBackground(onVideoEnd: () -> Unit) {
     AndroidView(
         factory = { context ->
             VideoView(context).apply {
-                setVideoPath("android.resource://" + context.packageName + "/" + R.raw.openscreenvideo) // 動画ファイル名
+                setVideoPath("android.resource://" + context.packageName + "/" + R.raw.aivy_white) // 動画ファイル名
                 setOnPreparedListener { mp ->
                     mp.start() // 再生開始
                 }
