@@ -21,6 +21,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import kotlin.math.roundToInt
 
 // グローバル変数
@@ -66,6 +68,7 @@ fun MessageBox(
                 keyboardActions = KeyboardActions(
                     onSend = {
                         if (text.isNotBlank()) { // 入力が空でないかチェック
+                            Firebase.database.reference.child("message").setValue(text)
                             updateLogs(text) // ログを更新
                             text = "" // 入力フィールドをクリア
                             focusManager.clearFocus() // キーボードを閉じる

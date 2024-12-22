@@ -14,6 +14,6 @@ fun Video() {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        ExoPlayerView("rtmp://0.tcp.jp.ngrok.io:16153/live/test")
+        ExoPlayerView("rtmp://192.168.0.7/live/test")
     }
 }

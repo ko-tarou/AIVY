@@ -1,10 +1,11 @@
 package com.websarva.wings.android.aivy.ui.viewpageparts
 
+
 import android.graphics.drawable.AnimatedImageDrawable
-import android.os.Bundle
+import android.provider.ContactsContract.Data
 import android.widget.ImageView
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,57 +13,74 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.websarva.wings.android.aivy.R
+import com.websarva.wings.android.aivy.ui.theme.DatailsColor
+import com.websarva.wings.android.aivy.ui.theme.HeaderColor
 
 // ギフトデータクラス
 data class Gift(
     val id: Int,
     val name: String,
     val price: Int,
-    val imageRes: Int, // DrawableのリソースID
+    val imageRes: Int,
     val description: String
 )
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PresentScreen()
-        }
-    }
-}
-
 // メイン画面のComposable関数
 @Composable
-fun PresentScreen() {
-    val gifts = getSampleGifts()
-    var selectedGift by remember { mutableStateOf<Gift?>(null) }
+fun PresentScreen(
+    gifts: List<Gift>,
+    selectedGift: Gift?,
+    onGiftSelected: (Gift) -> Unit,
+    onSendGift: (Gift) -> Unit,
+    screenHeight: Dp = 300.dp // 高さを柔軟に設定
+) {
     var isDialogVisible by remember { mutableStateOf(false) }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .height(screenHeight)
+            .border(3.dp, DatailsColor, RoundedCornerShape(20.dp)),
+        color = HeaderColor.copy(alpha = 0.5f)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
+            verticalArrangement = Arrangement.Bottom, // 下寄せ
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // ギフト一覧
-            GiftRow(gifts = gifts, selectedGift = selectedGift, onGiftClick = { selectedGift = it })
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp), // ギフト一覧の高さ
+                contentAlignment = Alignment.Center
+            ) {
+                GiftRow(gifts = gifts, selectedGift = selectedGift, onGiftClick = onGiftSelected)
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             // 送信ボタン
             Button(
-                onClick = { isDialogVisible = true },
+                onClick = {
+                    selectedGift?.let { onSendGift(it) }
+                    isDialogVisible = true
+                },
                 enabled = selectedGift != null,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selectedGift != null) Color.Blue else Color.Gray
+                    containerColor = if (selectedGift != null) DatailsColor.copy(alpha = 0.4f) else Color.Gray
                 )
             ) {
                 Text(
@@ -76,15 +94,37 @@ fun PresentScreen() {
             if (isDialogVisible) {
                 AlertDialog(
                     onDismissRequest = { isDialogVisible = false },
-                    title = { Text(text = "送信完了") },
-                    text = { Text(text = "ギフトを送信しました！") },
+                    title = {
+                        Text(
+                            text = "送信完了",
+                            color = Color.White,
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = "ギフトを送信しました！",
+                            color = Color.White // 本文の色を変更
+                        )
+                    },
                     confirmButton = {
-                        TextButton(onClick = { isDialogVisible = false }) {
-                            Text("閉じる")
+                        TextButton(
+                            onClick = { isDialogVisible = false }
+                        ) {
+                            Text(
+                                "閉じる",
+                                color = Color.White // ボタンのテキストの色を変更
+                            )
                         }
-                    }
+                    },
+                    containerColor = HeaderColor.copy(alpha = 0.6f), // ダイアログの背景色を変更
+                    tonalElevation = 8.dp,
+                    modifier = Modifier
+                        .width(300.dp)
+                        .height(200.dp)
+
                 )
             }
+
         }
     }
 }
@@ -95,7 +135,7 @@ fun GiftRow(gifts: List<Gift>, selectedGift: Gift?, onGiftClick: (Gift) -> Unit)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 0.dp),
         horizontalArrangement = Arrangement.SpaceEvenly // 均等配置
     ) {
         gifts.forEach { gift ->
@@ -114,14 +154,16 @@ fun GiftItem(gift: Gift, isSelected: Boolean, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .padding(4.dp)
-            .width(50.dp) // 各アイテムの幅を調整
-            .clickable(onClick = onClick), // クリック可能にする
+            .width(50.dp)
+            .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Surface(
-            modifier = Modifier.size(50.dp), // 画像のサイズを調整
+            modifier = Modifier.size(50.dp),
             shape = RoundedCornerShape(8.dp),
-            color = if (isSelected) Color(0xFFE0FFE0) else Color.LightGray
+            color = Color.White,
+            border = BorderStroke(if(isSelected) 2.5.dp else 1.dp, if (isSelected) DatailsColor else Color.Gray.copy(alpha = 0.5f)
+            )
         ) {
             AndroidView(
                 factory = { context ->
@@ -141,7 +183,7 @@ fun GiftItem(gift: Gift, isSelected: Boolean, onClick: () -> Unit) {
         Text(
             text = "¥${gift.price}",
             fontSize = 12.sp,
-            color = if (isSelected) Color.Blue else Color.Gray
+            color = if (isSelected) DatailsColor.copy(alpha = 0.4f) else Color.Gray
         )
     }
 }
@@ -156,11 +198,4 @@ fun getSampleGifts(): List<Gift> {
         Gift(5, "Robot", 500, R.drawable.gift5_kaitensurutori, "未来感あふれるロボットのギフト。"),
         Gift(6, "UFO", 100, R.drawable.gift6_hiyoko, "スペシャルなUFOギフトで特別な瞬間を。")
     )
-}
-
-// プレビュー用
-@Preview(showBackground = true)
-@Composable
-fun PresentScreenPreview() {
-    PresentScreen()
 }

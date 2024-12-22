@@ -78,17 +78,7 @@ fun ViewPage(navController:NavController){
                     .weight(1f)
             ) {
                 //video
-    //            Video()
-
-                //toolbar
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    Toolbar(isInputFocused = isInputFocused)
-                }
+                Video()
 
                 //messaget
                 Column(
@@ -103,6 +93,17 @@ fun ViewPage(navController:NavController){
                         }
                     )
                 }
+
+                //toolbar
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Toolbar(isInputFocused = isInputFocused)
+                }
+
                 //isEye
                 Column(
                     modifier = Modifier
