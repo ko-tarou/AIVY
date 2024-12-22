@@ -35,6 +35,7 @@ import com.websarva.wings.android.aivy.ui.SelectPageParts.CreateButton
 import com.websarva.wings.android.aivy.ui.SelectPageParts.DetailsInput
 import com.websarva.wings.android.aivy.ui.SelectPageParts.PeopleSelect
 import com.websarva.wings.android.aivy.ui.SelectPageParts.SelectHeader
+import com.websarva.wings.android.aivy.ui.ViewPageParts.ViewHeader
 import com.websarva.wings.android.aivy.ui.common.HeaderCommon
 import com.websarva.wings.android.aivy.ui.theme.DatailsColor
 import com.websarva.wings.android.aivy.ui.theme.HeaderColor
@@ -60,7 +61,7 @@ fun SelectPage(navController: NavController){
             )
         }
         Column{
-            SelectHeader(navController = navController)
+            ViewHeader(navController = navController)
             Column(
                 modifier = Modifier
                     .padding(top = 50.dp, bottom = 50.dp, start = 20.dp, end = 20.dp)
@@ -69,7 +70,6 @@ fun SelectPage(navController: NavController){
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(20.dp))
-//                        .background(DatailsColor.copy(alpha = 0.15f))
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,

@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.websarva.wings.android.aivy.ui.AccountPage
 import com.websarva.wings.android.aivy.ui.SelectPage
 import com.websarva.wings.android.aivy.ui.ViewPage
 import com.websarva.wings.android.aivy.ui.theme.AIVYTheme
@@ -36,6 +37,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("viewpage") {
                             ViewPage(navController)
+                        }
+                        composable("accountpage") {
+                            AccountPage(navController)
                         }
                     }
                 }

@@ -43,6 +43,7 @@ import com.websarva.wings.android.aivy.ui.ViewPageParts.IsEye
 import com.websarva.wings.android.aivy.ui.ViewPageParts.MessageBox
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Remove
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Toolbar
+import com.websarva.wings.android.aivy.ui.ViewPageParts.User
 import com.websarva.wings.android.aivy.ui.ViewPageParts.Video
 import com.websarva.wings.android.aivy.ui.ViewPageParts.log1
 import com.websarva.wings.android.aivy.ui.ViewPageParts.log2
@@ -77,17 +78,7 @@ fun ViewPage(navController:NavController){
                     .weight(1f)
             ) {
                 //video
-    //            Video()
-
-                //toolbar
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    Toolbar(isInputFocused = isInputFocused)
-                }
+                Video()
 
                 //messaget
                 Column(
@@ -102,6 +93,17 @@ fun ViewPage(navController:NavController){
                         }
                     )
                 }
+
+                //toolbar
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Toolbar(isInputFocused = isInputFocused)
+                }
+
                 //isEye
                 Column(
                     modifier = Modifier
@@ -110,6 +112,16 @@ fun ViewPage(navController:NavController){
                     verticalArrangement = Arrangement.Top,
                 ) {
                     IsEye()
+                }
+
+                //User
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top
+                ) {
+//                    User()
                 }
             }
         }
