@@ -81,4 +81,6 @@ dependencies {
     implementation("com.google.android.exoplayer:exoplayer:2.18.1")
     implementation("com.google.android.exoplayer:extension-rtmp:2.18.1")
 
+    implementation ("androidx.core:core-splashscreen:1.0.1")
+
 }
