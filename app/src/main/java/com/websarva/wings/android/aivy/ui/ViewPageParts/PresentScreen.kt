@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 import com.websarva.wings.android.aivy.R
 import com.websarva.wings.android.aivy.ui.theme.DatailsColor
 import com.websarva.wings.android.aivy.ui.theme.HeaderColor
@@ -92,6 +94,8 @@ fun PresentScreen(
 
             // 送信完了ダイアログ
             if (isDialogVisible) {
+
+                Firebase.database.reference.child("gift").setValue(true)
                 AlertDialog(
                     onDismissRequest = { isDialogVisible = false },
                     title = {
