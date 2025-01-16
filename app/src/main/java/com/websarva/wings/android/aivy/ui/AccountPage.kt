@@ -15,21 +15,37 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.navigation.NavController
 import com.websarva.wings.android.aivy.R
 import com.websarva.wings.android.aivy.ui.ViewPageParts.ViewHeader
 
 @Composable
 fun AccountPage(navController: NavController) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
     ) {
-        ViewHeader(navController = navController)
-        Profile()
+        Column(
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Image(
+                painterResource(id = R.drawable.okumono_sf30),
+                contentDescription = "okumono_sf30",
+                modifier = Modifier
+                    .fillMaxHeight(),
+                contentScale = ContentScale.Crop,
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            ViewHeader(navController = navController)
+            Profile()
+        }
     }
 }
 

@@ -24,7 +24,7 @@ class SplashActivity : ComponentActivity() {
         // スプラッシュ画面の表示
         setContent {
             OpenPageScreen(
-                videoPath = "android.resource://$packageName/${R.raw.aivy_white}",
+                videoPath = "android.resource://$packageName/${R.raw.aivy_white1}",
                 onVideoEnd = { onVideoComplete() },
                 onTap = { navigateToMainActivity() } // 動画終了を待たずにスキップ可能
             )
